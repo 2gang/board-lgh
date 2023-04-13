@@ -14,7 +14,7 @@ public class HomeController {
 
     @GetMapping("/")
     public String goHome() {
-        return "/admin/index";
+        return "admin/index";
     }   // /admin/
 
     @GetMapping("/buttons")     //자원을 접근하는 개념

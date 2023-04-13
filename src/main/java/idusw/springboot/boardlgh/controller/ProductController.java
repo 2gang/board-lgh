@@ -9,6 +9,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class ProductController {
     @GetMapping
     public String goRoot() {
-        return "/redirect:/admin/";
+        return "redirect:/admin/";
     }
 }
