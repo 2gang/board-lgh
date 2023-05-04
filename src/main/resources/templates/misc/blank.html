@@ -9,7 +9,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>LghBoard 2 - 404</title>
+    <title>LghBoard 2 - Blank</title>
 
     <!-- Custom fonts for this template-->
     <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -18,7 +18,7 @@
         rel="stylesheet">
 
     <!-- Custom styles for this template-->
-    <div th:replace="~{/fragments/main-fragments :: head}" />
+    <div th:replace="~{/main/main-fragments :: header}" />
 
 </head>
 
@@ -28,7 +28,7 @@
     <div id="wrapper">
 
         <!-- Sidebar -->
-        <div th:replace="~{/fragments/main-fragments :: sidebar}" />
+        <div th:replace="~{/main/main-fragments :: sidebar}" />
         <!-- End of Sidebar -->
 
         <!-- Content Wrapper -->
@@ -244,13 +244,8 @@
                 <!-- Begin Page Content -->
                 <div class="container-fluid">
 
-                    <!-- 404 Error Text -->
-                    <div class="text-center">
-                        <div class="error mx-auto" data-text="404">404</div>
-                        <p class="lead text-gray-800 mb-5">Page Not Found</p>
-                        <p class="text-gray-500 mb-0">It looks like you found a glitch in the matrix...</p>
-                        <a href="admin/index.html">&larr; Back to Dashboard</a>
-                    </div>
+                    <!-- Page Heading -->
+                    <h1 class="h3 mb-4 text-gray-800">Blank Page</h1>
 
                 </div>
                 <!-- /.container-fluid -->
@@ -259,7 +254,7 @@
             <!-- End of Main Content -->
 
             <!-- Footer -->
-            <div th:replace="~{/fragments/main-fragments :: footer}" />
+            <div th:replace="~{/main/main-fragments :: footer}" />
             <!-- End of Footer -->
 
         </div>
@@ -287,14 +282,14 @@
                 <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
                 <div class="modal-footer">
                     <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                    <a class="btn btn-primary" href="members/login.html">Logout</a>
+                    <a class="btn btn-primary" href="../members/login.html">Logout</a>
                 </div>
             </div>
         </div>
     </div>
 
     <!-- Bootstrap core JavaScript-->
-    <div th:replace="~{/fragments/main-fragments :: tail}" />
+    <div th:replace="~{/main/main-fragments :: tail}" />
 
 </body>
 

@@ -17,6 +17,6 @@ public class HomeController {
     //localhost:port로 요청을 하면 getAdmin() 메소드를 호출하여 처리하고, /admin/index view에게 전달
     @GetMapping("/")
     public String goAdmin() {
-        return "/admin/index";
+        return "/main/index";
     }
 }

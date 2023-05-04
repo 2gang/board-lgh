@@ -18,7 +18,7 @@
         rel="stylesheet">
 
     <!-- Custom styles for this template-->
-    <div th:replace="~{/fragments/main-fragments :: head}" />
+    <div th:replace="~{/main/main-fragments :: header}" />
 
 </head>
 
@@ -60,10 +60,10 @@
                                         </div>
                                         <input type="submit" value="Login" class="btn btn-primary btn-user btn-block">
                                         <hr>
-                                        <a href="../admin/index.html" class="btn btn-google btn-user btn-block">
+                                        <a href="../main/index.html" class="btn btn-google btn-user btn-block">
                                             <i class="fab fa-google fa-fw"></i> Login with Google
                                         </a>
-                                        <a href="../admin/index.html" class="btn btn-facebook btn-user btn-block">
+                                        <a href="../main/index.html" class="btn btn-facebook btn-user btn-block">
                                             <i class="fab fa-facebook-f fa-fw"></i> Login with Facebook
                                         </a>
                                     </form>
@@ -87,7 +87,7 @@
     </div>
 
     <!-- Bootstrap core JavaScript-->
-    <div th:replace="~{/fragments/main-fragments :: tail}" />
+    <div th:replace="~{/main/main-fragments :: footer}" />
 
 </body>
 

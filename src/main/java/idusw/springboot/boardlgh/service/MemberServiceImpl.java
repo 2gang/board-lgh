@@ -2,13 +2,19 @@ package idusw.springboot.boardlgh.service;
 
 import idusw.springboot.boardlgh.domain.Member;
 import idusw.springboot.boardlgh.domain.Memo;
+import idusw.springboot.boardlgh.domain.PageRequestDTO;
+import idusw.springboot.boardlgh.domain.PageResultDTO;
 import idusw.springboot.boardlgh.entity.MemberEntity;
 import idusw.springboot.boardlgh.entity.MemoEntity;
 import idusw.springboot.boardlgh.repository.MemberRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Function;
 
 @Service
 public class MemberServiceImpl implements MemberService{
@@ -26,7 +32,7 @@ public class MemberServiceImpl implements MemberService{
                 .name(m.getName())
                 .pw(m.getPw())
                 .build();
-        if(memberRepository.save(entity) != null) {
+        if(memberRepository.save(entity) != null) { // 저장 성공
             return 1;
         } else
             return 0;
@@ -58,6 +64,9 @@ public class MemberServiceImpl implements MemberService{
                     .seq(e.getSeq())
                     .email(e.getEmail())
                     .name(e.getName())
+                    .pw(e.getPw())
+                    .regDate(e.getRegDate())
+                    .modDate(e.getModDate())
                     .build();   // DTO(Data Transfer Object) : Controller - Service or Controller - View
             result.add(m);
         }
@@ -86,6 +95,15 @@ public class MemberServiceImpl implements MemberService{
             result.setPw(entity.getPw());
         }
         return result;
+    }
+
+    @Override
+    public PageResultDTO<Member, MemberEntity> getList(PageRequestDTO requestDTO) {
+        Pageable pageable = requestDTO.getPageable(Sort.by("seq"));
+        Page<MemberEntity> result = memberRepository.findAll(pageable);
+        Function<MemberEntity, Member> fn = (entity -> entityToDto(entity));
+
+        return new PageResultDTO(result, fn);
     }
 
 

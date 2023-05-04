@@ -12,7 +12,7 @@
     <title>LghBoard 2 - Dashboard</title>
 
     <!-- Custom fonts for this template-->
-    <div th:replace="~{/fragments/main-fragments :: head}" />
+    <div th:replace="~{/main/main-fragments :: header}" />
 
 </head>
 
@@ -22,7 +22,7 @@
     <div id="wrapper">
 
         <!-- Sidebar -->
-        <div th:replace="~{/fragments/main-fragments :: sidebar}" />
+        <div th:replace="~{/main/main-fragments :: sidebar}" />
         <!-- End of Sidebar -->
 
         <!-- Content Wrapper -->
@@ -32,7 +32,7 @@
             <div id="content">
 
                 <!-- Topbar -->
-                <div th:replace="~{/fragments/main-fragments :: topbar}" />
+                <div th:replace="~{/main/main-fragments :: topbar}" />
                 <!-- End of Topbar -->
 
                 <!-- Begin Page Content -->
@@ -335,7 +335,7 @@
                                 <div class="card-body">
                                     <div class="text-center">
                                         <img class="img-fluid px-3 px-sm-4 mt-3 mb-4" style="width: 25rem;"
-                                            src="/img/undraw_posting_photo.svg" alt="...">
+                                             src="/img/undraw_posting_photo.svg" alt="...">
                                     </div>
                                     <p>Add some quality, svg illustrations to your project courtesy of <a
                                             target="_blank" rel="nofollow" href="https://undraw.co/">unDraw</a>, a
@@ -370,7 +370,7 @@
             <!-- End of Main Content -->
 
             <!-- Footer -->
-            <div th:replace="~{/fragments/main-fragments :: footer}" />
+            <div th:replace="~{/main/main-fragments :: footer}" />
             <!-- End of Footer -->
 
         </div>
@@ -405,7 +405,7 @@
     </div>
 
     <!-- Bootstrap core JavaScript-->
-    <div th:replace="~{/fragments/main-fragments :: tail}" />
+    <div th:replace="~{/main/main-fragments :: footer}" />
 
     <!-- Page level plugins -->
     <script src="../vendor/chart.js/Chart.min.js"></script>
