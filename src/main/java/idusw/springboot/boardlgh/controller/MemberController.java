@@ -22,8 +22,19 @@ public class MemberController {
     public MemberController(MemberService memberService) { // Spring Framework이 주입(하도록 요청함)
         this.memberService = memberService;
     }
-
     HttpSession session = null;
+
+    @GetMapping("/list")
+    public String listMember2(Model model) {
+        List<Member> result = null;
+        if((result = memberService.readList()) != null) {
+            model.addAttribute("list", result);
+            return "/members/list2"; // view : template engine - thymeleaf .html
+        }
+        else
+            return "/errors/404";
+    }
+
     @GetMapping("/login-form")
     public String getLoginform(Model model) {
         model.addAttribute("member", Member.builder().build()); // email / pw 전달을 위한 객체
@@ -48,30 +59,64 @@ public class MemberController {
         return "redirect:/";
     }
 
-    @GetMapping(value = {"", "/"})
-    public String listMember(Model model) {
-        List<Member> result = null;
-        if((result = memberService.readList()) != null) {
-            model.addAttribute("list", result);
+//    @GetMapping(value = {"", "/"})
+//    public String listMember(Model model) {
+//        List<Member> result = null;
+//        if((result = memberService.readList()) != null) {
+//            model.addAttribute("list", result);
+//            return "/members/list";
+//        }
+//        else
+//            return "/errors/404";
+//    }
+
+//    @GetMapping(value = {"", "/{pn}/{size}"}) // /?pn=&size=
+//    public String listMemberPagination(@PathVariable("pn") int pn, @PathVariable("size") int size, Model model) {
+//        PageRequestDTO pageRequestDTO = PageRequestDTO.builder().page(pn).size(size).build();
+//        PageResultDTO<Member, MemberEntity> resultDTO = memberService.getList(pageRequestDTO);
+//        if(resultDTO != null) {
+//            model.addAttribute("result", resultDTO);
+//            return "/members/list";
+//        } else
+//            return "errors/404";
+//    }
+
+    @GetMapping(value = {"", "/"}) // ?page=&perPage=
+    public String listMemberPagination(@RequestParam(value="page", required = false, defaultValue = "1") int page,
+                                       @RequestParam(value="perPage", required = false, defaultValue = "10") int perPage,
+                                       @RequestParam(value="perPagination", required = false, defaultValue = "5") int perPagination,
+                                       @RequestParam(value="type", required = false, defaultValue = "e") String type,
+                                       @RequestParam(value="keyword", required = false, defaultValue = "") String keyword,
+
+                                       Model model) {
+        PageRequestDTO pageRequestDTO = PageRequestDTO.builder()
+                .page(page)
+                .perPage(perPage)
+                .perPagination(perPagination)
+                .type(type)
+                .keyword(keyword)
+                .build();
+        PageResultDTO<Member, MemberEntity> resultDTO = memberService.getList(pageRequestDTO);
+        if(resultDTO != null) {
+            model.addAttribute("result", resultDTO);
             return "/members/list";
-        }
-        else
-            return "/errors/404";
+        } else
+            return "errors/404";
     }
 
-    @GetMapping(value="/pn/{pn}")
-    public String listMemberByPageNumber(@PathVariable("pn") int pn, Model model) {
-        PageRequestDTO pageRequestDTO = PageRequestDTO.builder().page(pn).size(10).build();
-        PageResultDTO<Member, MemberEntity> resultDTO = memberService.getList(pageRequestDTO);
-        List<Member> result = resultDTO.getDtoList();
-        if(result != null) {
-            model.addAttribute("list", result);
-            return "/members/list";
-        }
-        else {
-            return "/errors/404";
-        }
-    }
+//    @GetMapping(value="/pn/{pn}")
+//    public String listMemberByPageNumber(@PathVariable("pn") int pn, Model model) {
+//        PageRequestDTO pageRequestDTO = PageRequestDTO.builder().page(pn).size(10).build();
+//        PageResultDTO<Member, MemberEntity> resultDTO = memberService.getList(pageRequestDTO);
+//        List<Member> result = resultDTO.getDtoList();
+//        if(result != null) {
+//            model.addAttribute("list", result);
+//            return "/members/list";
+//        }
+//        else {
+//            return "/errors/404";
+//        }
+//    }
 
 
     @GetMapping("/register-form")

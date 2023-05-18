@@ -24,8 +24,7 @@ public class MemberControllerTests {
     MemberRepository memberRepository;
 
     @Test
-    @Transactional
-        // could not initialize proxy - no Session : Lazy fetch 로 인한 오류
+    @Transactional // could not initialize proxy - no Session : Lazy fetch 로 인한 오류
     void readMember() { // seq를 사용해야 함
         Member member = new Member();
         member.setSeq(51L);
@@ -50,7 +49,7 @@ public class MemberControllerTests {
     @Test
     void initializeMember() {
         // Integer 데이터 흐름, Lambda 식 - 함수형 언어의 특징을 활용
-        IntStream.rangeClosed(1, 33).forEach(i -> {
+        IntStream.rangeClosed(1, 101).forEach(i -> {
             MemberEntity member = MemberEntity.builder()
                     .seq(Long.valueOf(i))
                     .email("email" + i + "@induk.ac.kr")
@@ -76,7 +75,7 @@ public class MemberControllerTests {
 
     @Test
     public void testPageList() {
-        PageRequestDTO pageRequestDTO = PageRequestDTO.builder().page(1).size(10).build();
+        PageRequestDTO pageRequestDTO = PageRequestDTO.builder().page(1).perPage(10).build();
         PageResultDTO<Member, MemberEntity> resultDTO = memberService.getList(pageRequestDTO);
         for(Member member : resultDTO.getDtoList()) {
             System.out.println(member);

@@ -19,5 +19,4 @@ public class BoardLghApplication {
     public HiddenHttpMethodFilter hiddenHttpMethodFilter() {    //put, delete 처리
         return new HiddenHttpMethodFilter();
     }
-
 }
