@@ -3,25 +3,27 @@ package idusw.springboot.boardlgh.entity;
 import lombok.*;
 import jakarta.persistence.*;
 
-@Entity
-@Table(name = "sw_board")
+@Entity     // 엔티티 클래스임을 나타내는 어노테이션
+@Table(name = "board_a201912016")
 
+@ToString(exclude = "writer")
+@Getter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Getter
-@ToString(exclude = "writer")
-public class BoardEntity extends BaseEntity {
+//@Data // = @ToString, @EqualsAndHashCode, @Getter, @Setter, @RequiredArgsConstructor
 
+public class BoardEntity extends BaseEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sw_board_seq_gen")
-    @SequenceGenerator(sequenceName = "sw_board_seq", name = "sw_board_seq_gen", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "board_a201912016_seq_gen")
+    @SequenceGenerator(sequenceName = "board_a201912016_seq", name = "board_a201912016_seq_gen", allocationSize = 1)
     private Long bno; // 유일키
 
+    @Column(length = 50, nullable = false)
     private String title; // 제목
+
+    @Column(length = 10000, nullable = false)
     private String content; // 내용
-    private Long views; // 조회수
-    private String block; // 차단여부
 
     @ManyToOne
     private MemberEntity writer;  //연관 관계 지정 : 작성자 1명 - 게시물 다수

@@ -13,13 +13,14 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 
-@SequenceGenerator(sequenceName = "member_a201912016_seq", name="member_a201912016_seq_gen",
-        initialValue = 1, allocationSize = 1)
+
 public class MemberEntity extends BaseEntity{
     // Entity : Service -> Repository -> Service 데이터 객체, DataBase 관점
     // Repository : Persistence Data 처리
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "member_a201912016_seq_gen")
+    @SequenceGenerator(sequenceName = "member_a201912016_seq", name="member_a201912016_seq_gen",
+            initialValue = 1, allocationSize = 1)
     // Oracle : GenerationType.SEQUENCE, Mysql : GenerationType.IDENTITY
     // Mysql : auto increment, Oracle : sequence - 자동 증가 식별번호
     private Long seq;

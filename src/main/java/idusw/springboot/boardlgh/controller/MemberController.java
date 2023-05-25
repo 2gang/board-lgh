@@ -119,7 +119,7 @@ public class MemberController {
 //    }
 
 
-    @GetMapping("/register-form")
+    @GetMapping("/reg-form")
     public String getRegisterForm(Model model) { // form 요청 -> view (template engine)
         model.addAttribute("member", Member.builder().build());
         return "/members/register";

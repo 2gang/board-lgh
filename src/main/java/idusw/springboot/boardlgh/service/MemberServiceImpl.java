@@ -116,7 +116,7 @@ public class MemberServiceImpl implements MemberService{
     @Override
     public PageResultDTO<Member, MemberEntity> getList(PageRequestDTO requestDTO) {
 //        Pageable pageable = requestDTO.getPageable(Sort.by("seq").ascending());
-        Sort sort = Sort.by("seq").descending();
+        Sort sort = Sort.by("seq").ascending();
 //        if(requestDTO.getSort() == null) {
 //            sort = Sort.by("seq").descending();
 //        }
