@@ -22,7 +22,7 @@ public class BoardEntity extends BaseEntity {
     @Column(length = 50, nullable = false)
     private String title; // 제목
 
-    @Column(length = 10000, nullable = false)
+    @Column(length = 1000, nullable = false)
     private String content; // 내용
 
     @ManyToOne
