@@ -1,6 +1,7 @@
 package idusw.springboot.boardlgh.domain;
 
 import lombok.*;
+import lombok.extern.java.Log;
 
 import java.time.LocalDateTime;
 
@@ -26,4 +27,6 @@ public class Board {    //5 fields
     //auditing
     private LocalDateTime regDate;
     private LocalDateTime modDate;
+
+    private Long replyCount;
 }

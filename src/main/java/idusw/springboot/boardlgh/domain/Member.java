@@ -22,5 +22,4 @@ public class Member {
 
     private LocalDateTime regDate;
     private LocalDateTime modDate;
-
 }

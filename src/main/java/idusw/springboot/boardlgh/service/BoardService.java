@@ -38,6 +38,7 @@ public interface BoardService {
                 .writerName(memberEntity.getName())
                 .regDate(entity.getRegDate())
                 .modDate(entity.getModDate())
+                .replyCount(replyCount)
                 .build();
         return dto;
     }

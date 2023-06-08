@@ -6,20 +6,25 @@ import idusw.springboot.boardlgh.domain.PageResultDTO;
 import idusw.springboot.boardlgh.entity.BoardEntity;
 import idusw.springboot.boardlgh.entity.MemberEntity;
 import idusw.springboot.boardlgh.repository.BoardRepository;
+import idusw.springboot.boardlgh.repository.ReplyRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.function.Function;
 
+@RequiredArgsConstructor
 @Service
 public class BoardServiceImpl implements BoardService{
-    private BoardRepository boardRepository;
-    public BoardServiceImpl(BoardRepository boardRepository) {
-        this.boardRepository = boardRepository;
-    }
+    private final BoardRepository boardRepository;
+    private final ReplyRepository replyRepository;
+
+//    public BoardServiceImpl(BoardRepository boardRepository, ReplyRepository replyRepository) {
+//        this.boardRepository = boardRepository;
+//        this.replyRepository = replyRepository;
+//    }
 
     @Override
     public int registerBoard(Board dto) {
@@ -33,7 +38,8 @@ public class BoardServiceImpl implements BoardService{
 
     @Override
     public Board findBoardById(Board board) {
-        return null;
+        Object[] entities = (Object[]) boardRepository.getBoardByBno(board.getBno());
+        return entityToDto((BoardEntity) entities[0], (MemberEntity) entities[1], (Long) entities[2]);
     }
 
     @Override
@@ -50,11 +56,21 @@ public class BoardServiceImpl implements BoardService{
 
     @Override
     public int updateBoard(Board board) {
-        return 0;
+        BoardEntity entity = BoardEntity.builder()
+                .title(board.getTitle())
+                .content(board.getContent())
+                .build();
+        if (boardRepository.save(entity) != null) { // 저장 성공
+            return 1;
+        } else {
+            return 0;
+        }
     }
 
     @Override
     public int deleteBoard(Board board) {
+        replyRepository.deleteByBno(board.getBno());
+        boardRepository.deleteById(board.getBno());
         return 0;
     }
 }
