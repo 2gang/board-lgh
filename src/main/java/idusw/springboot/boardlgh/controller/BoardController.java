@@ -36,7 +36,7 @@ public class BoardController {
     }
 
     @PostMapping("")
-    public String postBoard(@ModelAttribute("board") Board dto, Model model, HttpServletRequest request) {
+    public String postBoard(@ModelAttribute("board") Board dto, HttpServletRequest request) {
         session = request.getSession();
         Member member = (Member) session.getAttribute("mb");
         if(member != null) {
@@ -54,7 +54,18 @@ public class BoardController {
     }
 
     @GetMapping("")
-    public String getBoards(@ModelAttribute("pageRequestDTO") PageRequestDTO pageRequestDTO, Model model) { // 중간 본 수정
+    public String getBoards(@RequestParam(value="page", required = false, defaultValue = "1") int page,
+                            @RequestParam(value="perPage", required = false, defaultValue = "8") int perPage,
+                            @RequestParam(value="perPagination", required = false, defaultValue = "5") int perPagination,
+                            @RequestParam(value="type", required = false, defaultValue = "e") String type,
+                            @RequestParam(value="keyword", required = false, defaultValue = "") String keyword, Model model) {
+            PageRequestDTO pageRequestDTO = PageRequestDTO.builder()
+                    .page(page)
+                    .perPage(perPage)
+                    .perPagination(perPagination)
+                    .type(type)
+                    .keyword(keyword)
+                    .build();
         PageResultDTO<Board, Object[]> dto = boardService.findBoardAll(pageRequestDTO);
         model.addAttribute("list", dto);
         return "/boards/list";
@@ -64,7 +75,6 @@ public class BoardController {
     public String getBoardByBno(@PathVariable("bno") Long bno, Model model) {
         // Long bno 값을 사용하는 방식을 Board 객체에 bno를 설정하여 사용하는 방식으로 변경
         Board board = boardService.findBoardById(Board.builder().bno(bno).build());
-        boardService.updateBoard(board);
         model.addAttribute("board", board);
         return "/boards/detail";
     }
@@ -104,5 +114,15 @@ public class BoardController {
             return "redirect:/boards";
         else
             return "/errors/404"; // 게시물 등록 예외 처리
+    }
+
+    @PostMapping("/like/{seq}")
+    public String increaseLike(@PathVariable("seq") Long bno) {
+        int result = boardService.increaseLike(bno);
+        if (result == 1) {
+            return "redirect:/boards/{seq}";
+        }
+        else
+            return "/errors/404";
     }
 }

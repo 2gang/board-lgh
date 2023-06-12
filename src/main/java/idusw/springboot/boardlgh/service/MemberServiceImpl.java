@@ -3,11 +3,9 @@ package idusw.springboot.boardlgh.service;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import idusw.springboot.boardlgh.domain.Member;
-import idusw.springboot.boardlgh.domain.Memo;
 import idusw.springboot.boardlgh.domain.PageRequestDTO;
 import idusw.springboot.boardlgh.domain.PageResultDTO;
 import idusw.springboot.boardlgh.entity.MemberEntity;
-import idusw.springboot.boardlgh.entity.MemoEntity;
 import idusw.springboot.boardlgh.entity.QMemberEntity;
 import idusw.springboot.boardlgh.repository.MemberRepository;
 import org.springframework.data.domain.Page;
@@ -17,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.function.Function;
 
 @Service
@@ -32,13 +31,21 @@ public class MemberServiceImpl implements MemberService{
         MemberEntity entity = MemberEntity.builder()
                 .seq(m.getSeq())
                 .email(m.getEmail())
+                .phone(m.getPhone())
                 .name(m.getName())
                 .pw(m.getPw())
                 .build();
-        if(memberRepository.save(entity) != null) { // 저장 성공
+
+        // 이메일 중복 체크
+        if (memberRepository.findByEmail(m.getEmail()) != null) {
+            return 0; // 이미 등록된 이메일인 경우 처리
+        }
+
+        if (memberRepository.save(entity) != null) { // 저장 성공
             return 1;
-        } else
+        } else {
             return 0;
+        }
     }
 
     @Override
@@ -47,6 +54,7 @@ public class MemberServiceImpl implements MemberService{
         Member member = Member.builder()
                 .seq(e.getSeq())
                 .email(e.getEmail())
+                .phone(e.getPhone())
                 .name(e.getName())
                 .pw(e.getPw())
                 .build();
@@ -66,6 +74,7 @@ public class MemberServiceImpl implements MemberService{
             Member m = Member.builder()
                     .seq(e.getSeq())
                     .email(e.getEmail())
+                    .phone(e.getPhone())
                     .name(e.getName())
                     .pw(e.getPw())
                     .regDate(e.getRegDate())
@@ -81,6 +90,7 @@ public class MemberServiceImpl implements MemberService{
         MemberEntity entity = MemberEntity.builder()
                 .seq(m.getSeq())
                 .email(m.getEmail())
+                .phone(m.getPhone())
                 .name(m.getName())
                 .pw(m.getPw())
                 .build();
@@ -104,7 +114,7 @@ public class MemberServiceImpl implements MemberService{
         MemberEntity e = memberRepository.getByEmailPw(m.getEmail(), m.getPw()); // JpaRepository 구현체의 메소드
         System.out.println("login : " + e);
         Member result = null; // DTO (Data Transfer Object) : Controller - Service or Controller - View
-        if(e != null) {
+        if(e != null && !e.isAbandon()) {
             result = new Member();
             result.setSeq(e.getSeq());
             result.setEmail(e.getEmail());
@@ -115,21 +125,11 @@ public class MemberServiceImpl implements MemberService{
 
     @Override
     public PageResultDTO<Member, MemberEntity> getList(PageRequestDTO requestDTO) {
-//        Pageable pageable = requestDTO.getPageable(Sort.by("seq").ascending());
         Sort sort = Sort.by("seq").ascending();
-//        if(requestDTO.getSort() == null) {
-//            sort = Sort.by("seq").descending();
-//        }
-//        else {
-//            sort = Sort.by("seq").ascending();
-//        }
-
-//        Page<MemberEntity> result = memberRepository.findAll(pageable);
 
         Pageable pageable = requestDTO.getPageable(sort);
 
         BooleanBuilder booleanBuilder = findByCondition(requestDTO);
-//        Page<MemberEntity> result = memberRepository.findAll(pageable);
         Page<MemberEntity> result = memberRepository.findAll(booleanBuilder, pageable);
 
 
@@ -162,9 +162,9 @@ public class MemberServiceImpl implements MemberService{
         if(type.contains("n")) { // name로 검색
             conditionBuilder.or(qMemberEntity.name.contains(keyword));
         }
-//        if(type.contains("p")) { // phone로 검색
-//            conditionBuilder.or(qMemberEntity.phone.contains(keyword));
-//        }
+        if(type.contains("p")) { // phone로 검색
+            conditionBuilder.or(qMemberEntity.phone.contains(keyword));
+        }
 //        if(type.contains("a")) { // address로 검색
 //            conditionBuilder.or(qMemberEntity.address.contains(keyword));
 //        } // 조건을 전부 줄 수도 있으니 if else문 아님
@@ -175,5 +175,17 @@ public class MemberServiceImpl implements MemberService{
         return booleanBuilder;
     }
 
-
+    @Override
+    public void blockChangeMember(Long seq) {
+        Optional<MemberEntity> memberOptional = memberRepository.findById(seq);
+        if (memberOptional.isPresent()) {
+            MemberEntity member = memberOptional.get();
+            if (member.isAbandon()) {
+                member.setAbandon(false);
+            } else {
+                member.setAbandon(true);
+            }
+            memberRepository.save(member);
+        }
+    }
 }

@@ -12,11 +12,13 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.function.Function;
 
 @RequiredArgsConstructor
 @Service
+@Transactional
 public class BoardServiceImpl implements BoardService{
     private final BoardRepository boardRepository;
     private final ReplyRepository replyRepository;
@@ -56,21 +58,36 @@ public class BoardServiceImpl implements BoardService{
 
     @Override
     public int updateBoard(Board board) {
-        BoardEntity entity = BoardEntity.builder()
+        BoardEntity updateBoard = BoardEntity.builder()
+                .bno(board.getBno())
                 .title(board.getTitle())
                 .content(board.getContent())
+                .boardLike(boardRepository.findById(board.getBno()).get().getBoardLike())
+                .writer(boardRepository.findById(board.getBno()).get().getWriter())
                 .build();
-        if (boardRepository.save(entity) != null) { // 저장 성공
+        if (boardRepository.save(updateBoard) != null) {
             return 1;
-        } else {
+        }
+        else {
             return 0;
         }
     }
-
     @Override
     public int deleteBoard(Board board) {
         replyRepository.deleteByBno(board.getBno());
         boardRepository.deleteById(board.getBno());
         return 0;
     }
+
+    @Override
+    public int increaseLike(Long bno) {
+        BoardEntity boardEntity = boardRepository.findById(bno).orElse(null);
+        if (boardEntity != null) {
+            boardEntity.setLike(boardEntity.getBoardLike() + 1);
+            return 1;
+        }
+        return 0;
+    }
+
+
 }

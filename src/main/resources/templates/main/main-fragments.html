@@ -204,9 +204,19 @@
 
                 <!-- Nav Item - Alerts -->
                 <li class="nav-item active">
+                    <a class="nav-link" href="/boards">
+                        <span>Board</span>
+                        <i class="fas fa-sign-in-alt"></i></a>
+                </li>
+                <li class="nav-item active">
                     <a class="nav-link" th:href="@{'/members/' + ${session.mb.seq}}">
                         <i class="fas fa-sign-in-alt"></i>
                         <span>Detail</span></a>
+                </li>
+                <li class="nav-item active">
+                    <a class="nav-link" th:href="@{'/members/logout'}">
+                        <i class="fas fa-sign-in-alt"></i>
+                        <span>LogOut</span></a>
                 </li>
 
                 <!-- Nav Item - Messages -->
@@ -314,6 +324,11 @@
 
         <div th:if="${session.mb == null}">
             <ul class="navbar-nav ml-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" href="/boards">
+                        <span>Board</span>
+                        <i class="fas fa-sign-in-alt"></i></a>
+                </li>
                 <li class="nav-item active">
                     <a class="nav-link" href="/members/login-form">
                         <span>Login</span>

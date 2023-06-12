@@ -38,11 +38,16 @@
                         <header class="mb-4">
                             <!-- Post title-->
                             <h1 class="fw-bolder mb-1">[[${board.title}]]</h1>
-                            <!-- Post meta content-->
-                            <div class="text-muted fst-italic mb-2">Posted on January 1, 2023 by Start Bootstrap</div>
+                            <a class="nav-link btn-primary btn btn-block" th:href="@{'/boards/' + ${board.bno} + '/up-form'}">
+                                <span>수정</span>
+                            </a>
+                            <br/>
                             <!-- Post categories-->
-                            <a class="badge bg-secondary text-decoration-none link-light" href="#!">Web Design</a>
-                            <a class="badge bg-secondary text-decoration-none link-light" href="#!">Freebies</a>
+                            <form th:action="@{'/boards/like/' + ${board.bno}}" method="post">
+                                <a class="btn-primary btn btn-block">[[${board.boardLike}]]</a>&nbsp;
+                                <input type="hidden" name="seq" th:value="${board.bno}">
+                                <button type="submit" class="btn btn-primary btn-block btn-sm">좋아요</button>
+                            </form>
                         </header>
                         <!-- Preview image figure-->
                         <figure class="mb-4"><img class="img-fluid rounded" src="https://dummyimage.com/900x400/ced4da/6c757d.jpg" alt="..." /></figure>
@@ -125,7 +130,7 @@
                                                 $('.reply-count').html(" Reply Count  " + arr.length);
                                                 $.each(arr, function (idx, reply) {
                                                     console.log(reply);
-                                                    str += '    <div class="card-body" data-rno="' + reply.rno + '"><b>' + reply.rno + '</b>';
+                                                    // str += '    <div class="card-body" data-rno="' + reply.rno + '"><b>' + reply.rno + '</b>';
                                                     str += '    <h5 class="card-title">' + reply.text + '</h5>';
                                                     str += '    <h6 class="card-subtitle mb-2 text-muted">' + reply.replier + '</h6>';
                                                     str += '    <p class="card-text">' + formatTime(reply.regDate) + '</p>';

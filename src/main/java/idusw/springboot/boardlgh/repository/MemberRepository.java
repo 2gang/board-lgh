@@ -1,5 +1,6 @@
 package idusw.springboot.boardlgh.repository;
 
+import idusw.springboot.boardlgh.domain.Member;
 import idusw.springboot.boardlgh.entity.MemberEntity;
 import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -20,4 +21,6 @@ public interface MemberRepository extends JpaRepository<MemberEntity, Long>, Que
     @Transactional
     @Query("select m from MemberEntity m where m.email = :email and m.pw = :pw")
     MemberEntity getByEmailPw(@Param("email") String email, @Param("pw") String pw);
+
+    MemberEntity findByEmail(String email);
 }

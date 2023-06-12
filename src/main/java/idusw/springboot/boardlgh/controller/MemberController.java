@@ -11,7 +11,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -44,7 +43,7 @@ public class MemberController {
     @PostMapping("/login")
     public String loginMember(@ModelAttribute("member") Member member, HttpServletRequest request) { // 로그인 처리 -> service -> repository -> service -> controller
         Member result = null;
-        if((result = memberService.login(member)) != null ) { // 정상적으로 레코드의 변화가 발생하는 경우 영향받는 레코드 수를 반환
+        if((result = memberService.login(member)) != null && !member.isAbandon()) { // 정상적으로 레코드의 변화가 발생하는 경우 영향받는 레코드 수를 반환
             session = request.getSession();
             session.setAttribute("mb", result);
             return "redirect:/";
@@ -87,8 +86,13 @@ public class MemberController {
                                        @RequestParam(value="perPagination", required = false, defaultValue = "5") int perPagination,
                                        @RequestParam(value="type", required = false, defaultValue = "e") String type,
                                        @RequestParam(value="keyword", required = false, defaultValue = "") String keyword,
+                                       Model model, HttpServletRequest request) {
+        session = request.getSession();
+        Member member = (Member) session.getAttribute("mb");
 
-                                       Model model) {
+        if (member == null || !member.getEmail().equals("root201912016@induk.ac.kr")) {
+            return "redirect:/members/login-form";
+        }
         PageRequestDTO pageRequestDTO = PageRequestDTO.builder()
                 .page(page)
                 .perPage(perPage)
@@ -97,12 +101,15 @@ public class MemberController {
                 .keyword(keyword)
                 .build();
         PageResultDTO<Member, MemberEntity> resultDTO = memberService.getList(pageRequestDTO);
-        if(resultDTO != null) {
+
+        if (resultDTO != null) {
             model.addAttribute("result", resultDTO);
             return "/members/list";
-        } else
+        } else {
             return "errors/404";
+        }
     }
+
 
 //    @GetMapping(value="/pn/{pn}")
 //    public String listMemberByPageNumber(@PathVariable("pn") int pn, Model model) {
@@ -174,4 +181,12 @@ public class MemberController {
     public String forgotMemberPassword() { // 비밀번호(갱신) -> service -> repository -> service -> controller
         return "redirect:/"; // 루트로 이동
     }
+
+    @PostMapping("/changeBlock/{seq}")
+    public String blockChange(@PathVariable("seq") Long seq) {
+        memberService.blockChangeMember(seq);
+        return "redirect:/members/";
+    }
 }
+
+

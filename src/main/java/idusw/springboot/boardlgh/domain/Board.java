@@ -29,4 +29,7 @@ public class Board {    //5 fields
     private LocalDateTime modDate;
 
     private Long replyCount;
+
+    private Long boardLike = 0L;
+
 }

@@ -17,8 +17,10 @@ public class Member {
     // Domain(실제 업무 영역) Object
     private Long seq;
     private String email;
+    private String phone;
     private String name;
     private String pw;
+    private boolean abandon = false;
 
     private LocalDateTime regDate;
     private LocalDateTime modDate;

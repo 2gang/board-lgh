@@ -28,9 +28,19 @@ public class MemberEntity extends BaseEntity{
     @Column(length = 30, nullable = false)
     private String email;
 
+    @Column(length = 30, nullable = false)
+    private String phone;
+
     @Column(length = 20, nullable = false)
     private String name;
 
     @Column(length = 20, nullable = false)
     private String pw;
+
+    @Column(name = "abandon")
+    private boolean abandon = false;
+
+    public void setAbandon(boolean abandon) {
+        this.abandon = abandon;
+    }
 }

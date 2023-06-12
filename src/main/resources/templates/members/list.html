@@ -178,6 +178,7 @@
                                                         <option value="e">email</option>
                                                         <option value="n">name</option>
                                                         <option value="en">email+name</option>
+                                                        <option value="p">phone</option>
                                                     </select>
                                                 </label>
                                             </div>
@@ -202,9 +203,11 @@
                                                 <th>번호</th>
                                                 <th>이메일</th>
                                                 <th>이름</th>
+                                                <th>전화번호</th>
                                                 <th>암호</th>
                                                 <th>등록일</th>
                                                 <th>수정일</th>
+                                                <th>차단 상태</th>
                                             </tr>
                                             </thead>
                                             <tfoot>
@@ -212,9 +215,11 @@
                                                 <th>번호</th>
                                                 <th>이메일</th>
                                                 <th>이름</th>
+                                                <th>전화번호</th>
                                                 <th>암호</th>
                                                 <th>등록일</th>
                                                 <th>수정일</th>
+                                                <th>차단 상태</th>
                                             </tr>
                                             </tfoot>
                                             <tbody>
@@ -222,9 +227,19 @@
                                                 <td>[[${member.seq}]]</td>
                                                 <td>[[${member.email}]]</td>
                                                 <td>[[${member.name}]]</td>
+                                                <td>[[${member.phone}]]</td>
                                                 <td>[[${member.pw}]]</td>
                                                 <td>[[${member.regDate}]]</td>
                                                 <td>[[${member.modDate}]]</td>
+                                                <td>
+                                                    <form th:action="@{'/members/changeBlock/' + ${member.seq}}" method="post">
+                                                        <input type="hidden" name="seq" th:value="${member.seq}">
+                                                        <button type="submit" class="btn btn-block btn-sm"
+                                                                th:classappend="${member.abandon ? 'btn-danger' : 'btn-success'}"
+                                                                th:text="${member.abandon ? '차단 해제' : '차단하기'}"></button>
+                                                    </form>
+
+                                                </td>
                                             </tr>
                                             </tbody>
                                         </table>

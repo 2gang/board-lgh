@@ -27,4 +27,11 @@ public class BoardEntity extends BaseEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     private MemberEntity writer;  //연관 관계 지정 : 작성자 1명 - 게시물 다수
+
+    @Column(name = "boardLike")
+    private Long boardLike = 0L;
+
+    public void setLike(long boardLike) {
+        this.boardLike = boardLike;
+    }
 }
