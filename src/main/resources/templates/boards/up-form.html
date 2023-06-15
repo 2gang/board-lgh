@@ -19,10 +19,50 @@
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-                <li class="nav-item"><a class="nav-link" href="#">Home</a></li>
-                <li class="nav-item"><a class="nav-link" href="#!">About</a></li>
-                <li class="nav-item"><a class="nav-link" href="#!">Contact</a></li>
-                <li class="nav-item"><a class="nav-link active" aria-current="page" href="#">Blog</a></li>
+                <div th:if="${session.mb == null}">
+                    <ul class="navbar-nav ml-auto">
+                        <li class="nav-item active">
+                            <a class="nav-link" href="/boards">
+                                <span>Board</span>
+                                <i class="fas fa-sign-in-alt"></i></a>
+                        </li>
+                        <li class="nav-item active">
+                            <a class="nav-link" href="/members/login-form">
+                                <span>Login</span>
+                                <i class="fas fa-sign-in-alt"></i></a>
+                        </li>
+                        <li class="nav-item active">
+                            <a class="nav-link" href="/members/reg-form">
+                                <span>Register</span>
+                                <i class="far fa-registered"></i></a>
+                        </li>
+                    </ul>
+                </div>
+                <div th:if="${session.mb != null}">
+                    <ul class="navbar-nav ml-auto">
+                        <li class="nav-item active">
+                            <a class="nav-link" href="/boards/reg-form">
+                                <span>Board Regist</span>
+                                <i class="fas fa-sign-in-alt"></i></a>
+                        </li>
+                        <li class="nav-item active">
+                            <a class="nav-link" th:href="@{'/members/' + ${session.mb.seq}}">
+                                <i class="fas fa-sign-in-alt"></i>
+                                <span>Detail</span></a>
+                        </li>
+                        <li class="nav-item active">
+                            <a class="nav-link" th:href="@{'/members/logout'}">
+                                <i class="fas fa-sign-in-alt"></i>
+                                <span>LogOut</span></a>
+                        </li>
+                        <li class="nav-item active" style="border: 1px solid white;">
+                            <a class="nav-link" id="userDropdown"
+                               data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <span th:text="${session.mb.name}"></span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
             </ul>
         </div>
     </div>
