@@ -53,8 +53,9 @@ public class MemberControllerTests {
             MemberEntity member = MemberEntity.builder()
                     .seq(Long.valueOf(i))
                     .email("email" + i + "@induk.ac.kr")
-                    .phone("01011112222")
+                    .mobile("0101111" + String.format("%04d",i))
                     .pw("pw" + i)
+                    .zipcode(String.format("%05d",i))
                     .name("name" + i)
                     .abandon(false)
                     .build();

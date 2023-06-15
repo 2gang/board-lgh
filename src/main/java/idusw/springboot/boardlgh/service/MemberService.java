@@ -26,10 +26,11 @@ public interface MemberService{
         MemberEntity entity = MemberEntity.builder()
                 .seq((dto.getSeq()))
                 .email(dto.getEmail())
-                .phone(dto.getPhone())
+                .mobile(dto.getMobile())
                 .name(dto.getName())
                 .abandon(dto.isAbandon())
                 .pw(dto.getPw())
+                .zipcode(dto.getZipcode())
                 .build();
         return entity;
     }
@@ -38,12 +39,13 @@ public interface MemberService{
         Member dto = Member.builder()
                 .seq(entity.getSeq())
                 .email(entity.getEmail())
-                .phone(entity.getPhone())
+                .mobile(entity.getMobile())
                 .name(entity.getName())
                 .pw(entity.getPw())
                 .abandon(entity.isAbandon())
                 .regDate(entity.getRegDate())
                 .modDate(entity.getModDate())
+                .zipcode(entity.getZipcode())
                 .build();
         return dto;
     }

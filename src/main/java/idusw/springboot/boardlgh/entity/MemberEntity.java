@@ -28,14 +28,17 @@ public class MemberEntity extends BaseEntity{
     @Column(length = 30, nullable = false)
     private String email;
 
-    @Column(length = 30, nullable = false)
-    private String phone;
+    @Column(length = 13, nullable = false)
+    private String mobile;
 
     @Column(length = 20, nullable = false)
     private String name;
 
     @Column(length = 20, nullable = false)
     private String pw;
+
+    @Column(length = 5, nullable = false)
+    private String zipcode;
 
     @Column(name = "abandon")
     private boolean abandon = false;

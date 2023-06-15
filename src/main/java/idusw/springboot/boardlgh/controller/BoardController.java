@@ -59,17 +59,18 @@ public class BoardController {
                             @RequestParam(value="perPagination", required = false, defaultValue = "5") int perPagination,
                             @RequestParam(value="type", required = false, defaultValue = "e") String type,
                             @RequestParam(value="keyword", required = false, defaultValue = "") String keyword, Model model) {
-            PageRequestDTO pageRequestDTO = PageRequestDTO.builder()
-                    .page(page)
-                    .perPage(perPage)
-                    .perPagination(perPagination)
-                    .type(type)
-                    .keyword(keyword)
-                    .build();
+        PageRequestDTO pageRequestDTO = PageRequestDTO.builder()
+                .page(page)
+                .perPage(perPage)
+                .perPagination(perPagination)
+                .type(type)
+                .keyword(keyword)
+                .build();
         PageResultDTO<Board, Object[]> dto = boardService.findBoardAll(pageRequestDTO);
         model.addAttribute("list", dto);
         return "/boards/list";
     }
+
 
     @GetMapping("/{bno}")
     public String getBoardByBno(@PathVariable("bno") Long bno, Model model) {

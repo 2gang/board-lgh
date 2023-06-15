@@ -46,15 +46,15 @@ public class BoardServiceImpl implements BoardService{
 
     @Override
     public PageResultDTO<Board, Object[]> findBoardAll(PageRequestDTO pageRequestDTO) {
-        Pageable pageable = pageRequestDTO.getPageable(Sort.by("bno").descending());
         Page<Object[]> result = boardRepository.searchPage(
                 pageRequestDTO.getType(),
                 pageRequestDTO.getKeyword(),
-                pageRequestDTO.getPageable(Sort.by("bno").descending()));
+                pageRequestDTO.getPageable(Sort.by("replyCount").descending().and(Sort.by("bno").descending())));
         Function<Object[], Board> fn = (entity -> entityToDto((BoardEntity) entity[0],
                 (MemberEntity) entity[1], (Long) entity[2]));
-        return new PageResultDTO<>(result, fn,5);
+        return new PageResultDTO<>(result, fn, 5);
     }
+
 
     @Override
     public int updateBoard(Board board) {

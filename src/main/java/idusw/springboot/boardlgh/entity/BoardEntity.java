@@ -31,6 +31,8 @@ public class BoardEntity extends BaseEntity {
     @Column(name = "boardLike")
     private Long boardLike = 0L;
 
+    private Long replyCount;
+
     public void setLike(long boardLike) {
         this.boardLike = boardLike;
     }

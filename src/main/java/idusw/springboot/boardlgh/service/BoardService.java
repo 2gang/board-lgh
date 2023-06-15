@@ -27,6 +27,7 @@ public interface BoardService {
                 .title(dto.getTitle())
                 .content(dto.getContent())
                 .writer(member)
+                .replyCount(dto.getReplyCount())
                 .boardLike(dto.getBoardLike())
                 .build();
         return entity;

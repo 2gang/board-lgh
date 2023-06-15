@@ -90,7 +90,7 @@ public class MemberController {
         session = request.getSession();
         Member member = (Member) session.getAttribute("mb");
 
-        if (member == null || !member.getEmail().equals("root201912016@induk.ac.kr")) {
+        if (member == null || !member.getEmail().equals("admin201912016@induk.ac.kr")) {
             return "redirect:/members/login-form";
         }
         PageRequestDTO pageRequestDTO = PageRequestDTO.builder()
@@ -103,6 +103,14 @@ public class MemberController {
         PageResultDTO<Member, MemberEntity> resultDTO = memberService.getList(pageRequestDTO);
 
         if (resultDTO != null) {
+            // 전화번호 형식으로 변환
+            List<Member> memberList = resultDTO.getDtoList();
+            for (Member m : memberList) {
+                String mobile = m.getMobile();
+                String formattedMobile = mobile.replaceAll("(\\d{3})(\\d{4})(\\d{4})", "$1-$2-$3");
+                m.setMobile(formattedMobile);
+            }
+
             model.addAttribute("result", resultDTO);
             return "/members/list";
         } else {

@@ -23,4 +23,6 @@ public interface MemberRepository extends JpaRepository<MemberEntity, Long>, Que
     MemberEntity getByEmailPw(@Param("email") String email, @Param("pw") String pw);
 
     MemberEntity findByEmail(String email);
+
+    MemberEntity findByMobile(String mobile);
 }

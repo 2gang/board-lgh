@@ -31,14 +31,19 @@ public class MemberServiceImpl implements MemberService{
         MemberEntity entity = MemberEntity.builder()
                 .seq(m.getSeq())
                 .email(m.getEmail())
-                .phone(m.getPhone())
+                .mobile(m.getMobile())
                 .name(m.getName())
                 .pw(m.getPw())
+                .zipcode(m.getZipcode())
                 .build();
 
         // 이메일 중복 체크
         if (memberRepository.findByEmail(m.getEmail()) != null) {
             return 0; // 이미 등록된 이메일인 경우 처리
+        }
+
+        if(memberRepository.findByMobile(m.getMobile()) != null) {
+            return 0;
         }
 
         if (memberRepository.save(entity) != null) { // 저장 성공
@@ -54,9 +59,10 @@ public class MemberServiceImpl implements MemberService{
         Member member = Member.builder()
                 .seq(e.getSeq())
                 .email(e.getEmail())
-                .phone(e.getPhone())
+                .mobile(e.getMobile())
                 .name(e.getName())
                 .pw(e.getPw())
+                .zipcode(e.getZipcode())
                 .build();
         return member;
     }
@@ -74,9 +80,10 @@ public class MemberServiceImpl implements MemberService{
             Member m = Member.builder()
                     .seq(e.getSeq())
                     .email(e.getEmail())
-                    .phone(e.getPhone())
+                    .mobile(e.getMobile())
                     .name(e.getName())
                     .pw(e.getPw())
+                    .zipcode(e.getZipcode())
                     .regDate(e.getRegDate())
                     .modDate(e.getModDate())
                     .build();   // DTO(Data Transfer Object) : Controller - Service or Controller - View
@@ -90,9 +97,10 @@ public class MemberServiceImpl implements MemberService{
         MemberEntity entity = MemberEntity.builder()
                 .seq(m.getSeq())
                 .email(m.getEmail())
-                .phone(m.getPhone())
+                .mobile(m.getMobile())
                 .name(m.getName())
                 .pw(m.getPw())
+                .zipcode(m.getZipcode())
                 .build();
         if(memberRepository.save(entity) != null) // 저장 성공
             return 1;
@@ -162,12 +170,13 @@ public class MemberServiceImpl implements MemberService{
         if(type.contains("n")) { // name로 검색
             conditionBuilder.or(qMemberEntity.name.contains(keyword));
         }
-        if(type.contains("p")) { // phone로 검색
-            conditionBuilder.or(qMemberEntity.phone.contains(keyword));
+        if (type.contains("p")) { // phone로 검색
+            String lastFourDigits = keyword.substring(keyword.length() - 4);
+            conditionBuilder.or(qMemberEntity.mobile.endsWith(lastFourDigits));
         }
-//        if(type.contains("a")) { // address로 검색
-//            conditionBuilder.or(qMemberEntity.address.contains(keyword));
-//        } // 조건을 전부 줄 수도 있으니 if else문 아님
+        if(type.contains("a")) { // address로 검색
+            conditionBuilder.or(qMemberEntity.zipcode.contains(keyword));
+        } // 조건을 전부 줄 수도 있으니 if else문 아님
 //        if(type.contains("l")) {
 //            conditionBuilder.or(qMemberEntity.level.contains(keyword));
 //        }
